@@ -95,12 +95,22 @@ namespace ISM6225_Spring_2024_Assignment_2
         nums is sorted in non-decreasing order.
         */
 
-        public static int RemoveDuplicates(int[] nums)
+        public static int RemoveDuplicates(int[] numbers)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                HashSet<int> uniqueSet = new HashSet<int>();
+
+                for (int currentIndex = 0; currentIndex < numbers.Length; currentIndex++)
+                {
+                    if (uniqueSet.Add(numbers[currentIndex]))
+                    {
+                        numbers[uniqueSet.Count - 1] = numbers[currentIndex];
+                    }
+                }
+
+                return uniqueSet.Count;
+
             }
             catch (Exception)
             {
@@ -130,12 +140,22 @@ namespace ISM6225_Spring_2024_Assignment_2
         -231 <= nums[i] <= 231 - 1
         */
 
-        public static IList<int> MoveZeroes(int[] nums)
+        public static IList<int> MoveZeroes(int[] numbers)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<int>();
+                int nonZeroPointer = 0;
+                for (int currentPointer = 0; currentPointer < numbers.Length; currentPointer++)
+                {
+                    if (numbers[currentPointer] != 0)
+                    {
+                        int temp = numbers[nonZeroPointer];
+                        numbers[nonZeroPointer] = numbers[currentPointer];
+                        numbers[currentPointer] = temp;
+                        nonZeroPointer++;
+                    }
+                }
+                return numbers.ToList();
             }
             catch (Exception)
             {
@@ -181,12 +201,41 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
-        public static IList<IList<int>> ThreeSum(int[] nums)
+        public static IList<IList<int>> ThreeSum(int[] numbers)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                Array.Sort(numbers);
+                List<IList<int>> result = new List<IList<int>>();
+
+                for (int i = 0; i < numbers.Length - 2; i++)
+                {
+                    if (i == 0 || numbers[i] != numbers[i - 1])
+                    {
+                        int leftPtr = i + 1, rightPtr = numbers.Length - 1;
+                        while (leftPtr < rightPtr)
+                        {
+                            int sum = numbers[i] + numbers[leftPtr] + numbers[rightPtr];
+                            if (sum == 0)
+                            {
+                                result.Add(new List<int> { numbers[i], numbers[leftPtr], numbers[rightPtr] });
+                                while (leftPtr < rightPtr && numbers[leftPtr] == numbers[leftPtr + 1]) leftPtr++;
+                                while (leftPtr < rightPtr && numbers[rightPtr] == numbers[rightPtr - 1]) rightPtr--;
+                                leftPtr++;
+                                rightPtr--;
+                            }
+                            else if (sum < 0)
+                            {
+                                leftPtr++;
+                            }
+                            else
+                            {
+                                rightPtr--;
+                            }
+                        }
+                    }
+                }
+                return result;
             }
             catch (Exception)
             {
@@ -216,12 +265,17 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
-        public static int FindMaxConsecutiveOnes(int[] nums)
+        public static int FindMaxConsecutiveOnes(int[] numbers)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                int maxLen = 0, currLen = 0;
+                foreach (int num in numbers)
+                {
+                    currLen = num == 1 ? currLen + 1 : 0;
+                    maxLen = Math.Max(maxLen, currLen);
+                }
+                return maxLen;
             }
             catch (Exception)
             {
@@ -252,12 +306,20 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
-        public static int BinaryToDecimal(int binary)
+        public static int BinaryToDecimal(int binaryNumber)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                int decimalNumber = 0;
+                int baseValue = 1;
+                while (binaryNumber > 0)
+                {
+                    int lastDigit = binaryNumber % 10;
+                    decimalNumber += lastDigit * baseValue;
+                    baseValue *= 2;
+                    binaryNumber /= 10;
+                }
+                return decimalNumber;
             }
             catch (Exception)
             {
@@ -290,12 +352,21 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
-        public static int MaximumGap(int[] nums)
+        public static int MaximumGap(int[] numbers)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                Array.Sort(numbers);
+                int maxGap = 0;
+                for (int curIndex = 1; curIndex < numbers.Length; curIndex++)
+                {
+                    int gap = numbers[curIndex] - numbers[curIndex - 1];
+                    if (gap > maxGap)
+                    {
+                        maxGap = gap;
+                    }
+                }
+                return maxGap;
             }
             catch (Exception)
             {
@@ -330,12 +401,17 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
-        public static int LargestPerimeter(int[] nums)
+        public static int LargestPerimeter(int[] numbers)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                Array.Sort(numbers);
+                int index = numbers.Length - 3;
+                while (index >= 0 && numbers[index] + numbers[index + 1] <= numbers[index + 2])
+                {
+                    index--;
+                }
+                return index >= 0 ? numbers[index] + numbers[index + 1] + numbers[index + 2] : 0;
             }
             catch (Exception)
             {
@@ -384,12 +460,16 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
-        public static string RemoveOccurrences(string s, string part)
+        public static string RemoveOccurrences(string str, string pattern)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return "";
+                int position;
+                while ((position = str.IndexOf(pattern)) != -1)
+                {
+                    str = str.Remove(position, pattern.Length);
+                }
+                return str;
             }
             catch (Exception)
             {
